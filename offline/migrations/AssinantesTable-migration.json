@@ -1,0 +1,41 @@
+{
+    "Table": {
+        "TableName": "AssinantesTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "nome",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "pular_cesta",
+                "AttributeType": "BOOL"
+            },
+            {
+                "AttributeName": "usuario_id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "planos",
+                "AttributeType": "L"
+            },
+            {
+                "AttributeName": "lojas",
+                "AttributeType": "L"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}

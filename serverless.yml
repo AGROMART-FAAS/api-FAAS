@@ -1,0 +1,98 @@
+service: assinante-service
+
+frameworkVersion: "4"
+
+plugins:
+    - serverless-dynamodb
+    - serverless-offline
+
+custom:
+    stage: ${opt:stage, 'dev'}
+    tableThroughputs:
+        dev: 1
+        default: 5
+    dynamodb:
+        port: 8000
+        migrate: true
+        inMemory: true
+        convertEmptyValues: true
+    serverless-dynamodb:
+        stages:
+            - dev
+        tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+        start:
+            port: 8000
+            inMemory: true
+            migrate: true
+            convertEmptyValues: true
+            enableLogs: true
+
+provider:
+    name: aws
+    runtime: nodejs16.x
+    region: ${opt:region, 'us-east-1'}
+    memorySize: 1024
+    timeout: 10
+    environment:
+        STAGE: ${opt:stage, 'dev'}
+        DYNAMODB_TABLE_ASSINANTES: Assinantes-Table
+
+functions:
+    getAssinante:
+        handler: handlers/assinante.getAssinantes
+        events:
+            - http:
+                  path: assinantes
+                  method: get
+                  cors: true
+    createAssinante:
+        handler: handlers/assinante.createAssinante
+        events:
+            - http:
+                  path: assinantes
+                  method: post
+                  cors: true
+    updateAssinante:
+        handler: handlers/assinante.updateAssinante
+        events:
+            - http:
+                  path: assinantes/{id}
+                  method: put
+                  cors: true
+    deleteAssinante:
+        handler: handlers/assinante.deleteAssinante
+        events:
+            - http:
+                  path: assinantes/{id}
+                  method: delete
+                  cors: true
+
+resources:
+    Resources:
+        AssinantesTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: AssinantesTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                    - AttributeName: usuario_id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                    - AttributeName: usuario_id
+                      KeyType: RANGE
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 5
+                    WriteCapacityUnits: 5
+                GlobalSecondaryIndexes:
+                    - IndexName: GSI1
+                      KeySchema:
+                          - AttributeName: usuario_id
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 5
+                          WriteCapacityUnits: 5
