@@ -28,17 +28,20 @@ exports.getAssinantes = async (event, context) => {
                     id: assinante.id,
                     cestas_disponiveis: assinante.cestas_disponiveis,
                     pular_cesta: assinante.pular_cesta,
-                    planos: Array.isArray(assinante.planos)
-                        ? assinante.planos.map((plano) => ({
-                              quantidade_de_cestas: plano.quantidade_de_cestas,
-                              imagem: plano.imagem,
-                              valor: plano.valor,
-                              nome: plano.nome,
-                              descricao: plano.descricao,
-                              loja: plano.loja,
-                          }))
-                        : [],
+                    planos: assinante.planos,
+                    lojas: assinante.lojas,
+                    // planos: Array.isArray(assinante.planos)
+                    //     ? assinante.planos.map((plano) => ({
+                    //           quantidade_de_cestas: plano.quantidade_de_cestas,
+                    //           imagem: plano.imagem,
+                    //           valor: plano.valor,
+                    //           nome: plano.nome,
+                    //           descricao: plano.descricao,
+                    //           loja: plano.loja,
+                    //       }))
+                    //     : [],
                     created_at: assinante.created_at,
+                    usuario_id: assinante.usuario_id,
                 }))
             ),
         };
