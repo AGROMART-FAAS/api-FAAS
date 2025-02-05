@@ -13,7 +13,6 @@ exports.getAssinantes = async (event, context) => {
         };
 
         if (id) {
-            console.log("Handler");
             params.IndexName = "GSI1"; // Buscar por usuário_id
             params.KeyConditionExpression = "usuario_id = :id";
             params.ExpressionAttributeValues = { ":id": id };

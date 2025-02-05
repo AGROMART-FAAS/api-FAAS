@@ -1,4 +1,4 @@
-service: assinante-service
+service: api-FAAS
 
 frameworkVersion: "4"
 
@@ -35,7 +35,19 @@ provider:
     timeout: 10
     environment:
         STAGE: ${opt:stage, 'dev'}
-        DYNAMODB_TABLE_ASSINANTES: Assinantes-Table
+        DYNAMODB_TABLE_ASSINANTES: AssinantesTable
+        DYNAMODB_TABLE_USUARIOS: UsuariosTable
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - dynamodb:DescribeTable
+              - dynamodb:Query
+              - dynamodb:Scan
+              - dynamodb:GetItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DeleteItem
+          Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
     getAssinante:
@@ -52,18 +64,25 @@ functions:
                   path: assinantes
                   method: post
                   cors: true
-    updateAssinante:
-        handler: handlers/assinante.updateAssinante
+    getUsuarios:
+        handler: handlers/usuario.getUsuarios
         events:
             - http:
-                  path: assinantes/{id}
-                  method: put
+                  path: usuarios
+                  method: get
                   cors: true
-    deleteAssinante:
-        handler: handlers/assinante.deleteAssinante
+    createUsuario:
+        handler: handlers/usuario.createUsuario
         events:
             - http:
-                  path: assinantes/{id}
+                  path: usuarios
+                  method: post
+                  cors: true
+    deleteUsuario:
+        handler: handlers/usuario.deleteUsuario
+        events:
+            - http:
+                  path: usuarios/{id}
                   method: delete
                   cors: true
 
@@ -96,3 +115,16 @@ resources:
                       ProvisionedThroughput:
                           ReadCapacityUnits: 5
                           WriteCapacityUnits: 5
+        UsuariosTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: UsuariosTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 5
+                    WriteCapacityUnits: 5
