@@ -1,0 +1,78 @@
+{
+    "Table": {
+        "TableName": "LojasTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "tipos_de_entrega",
+                "AttributeType": "S"
+            }
+        ],
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexName": "TiposDeEntregaIndex",
+                "KeySchema": [
+                    {
+                        "AttributeName": "tipos_de_entrega",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "Projection": {
+                    "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 1,
+                    "WriteCapacityUnits": 1
+                }
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        },
+        "AttributeDefinitionsExtended": {
+            "nome": {
+                "AttributeType": "S"
+            },
+            "descricao": {
+                "AttributeType": "S"
+            },
+            "banner": {
+                "AttributeType": "S"
+            },
+            "tipos_de_entrega": {
+                "AttributeType": "S"
+            },
+            "contato": {
+                "AttributeType": "N"
+            },
+            "cnpj": {
+                "AttributeType": "N"
+            },
+            "endereco": {
+                "AttributeType": "S"
+            },
+            "cestas": {
+                "AttributeType": "L"
+            },
+            "planos": {
+                "AttributeType": "L"
+            },
+            "assinantes": {
+                "AttributeType": "L"
+            },
+            "produto_avulsos": {
+                "AttributeType": "L"
+            }
+        }
+    }
+}

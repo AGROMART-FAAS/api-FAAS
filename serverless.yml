@@ -85,6 +85,20 @@ functions:
                   path: usuarios/{id}
                   method: delete
                   cors: true
+    getLojas:
+        handler: handlers/loja.getLojas
+        events:
+            - http:
+                  path: lojas
+                  method: get
+                  cors: true
+    createLoja:
+        handler: handlers/loja.createLoja
+        events:
+            - http:
+                  path: lojas
+                  method: post
+                  cors: true
 
 resources:
     Resources:
@@ -100,11 +114,7 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                    - AttributeName: usuario_id
-                      KeyType: RANGE
-                ProvisionedThroughput:
-                    ReadCapacityUnits: 5
-                    WriteCapacityUnits: 5
+                BillingMode: PAY_PER_REQUEST
                 GlobalSecondaryIndexes:
                     - IndexName: GSI1
                       KeySchema:
@@ -112,9 +122,6 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
-                      ProvisionedThroughput:
-                          ReadCapacityUnits: 5
-                          WriteCapacityUnits: 5
         UsuariosTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -128,3 +135,14 @@ resources:
                 ProvisionedThroughput:
                     ReadCapacityUnits: 5
                     WriteCapacityUnits: 5
+        LojasTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: LojasTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
