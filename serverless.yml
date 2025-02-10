@@ -128,6 +128,22 @@ functions:
                   method: get
                   cors: true
 
+    createEndereco:
+        handler: handlers/enderecoHandler.createEndereco
+        events:
+            - http:
+                  path: endereco
+                  method: post
+                  cors: true
+
+    getEnderecoByUser:
+        handler: handlers/enderecoHandler.getEnderecoByUser
+        events:
+            - http:
+                  path: endereco/user/{user_id}
+                  method: get
+                  cors: true
+
 resources:
     Resources:
         AssinantesTable:
