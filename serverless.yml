@@ -104,7 +104,6 @@ functions:
                   path: cestas
                   method: post
                   cors: true
-
     getCestas:
         handler: handlers/cesta.getCestas
         events:
@@ -112,6 +111,23 @@ functions:
                   path: cestas
                   method: get
                   cors: true
+
+    updateDevice:
+        handler: handlers/device.updateDevice
+        events:
+            - http:
+                  path: devices
+                  method: post
+                  cors: true
+
+    findUserExpoPushToken:
+        handler: handlers/device.findUserExpoPushToken
+        events:
+            - http:
+                  path: devices/user/{user_id}
+                  method: get
+                  cors: true
+
 resources:
     Resources:
         AssinantesTable:

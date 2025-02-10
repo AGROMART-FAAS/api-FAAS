@@ -19,6 +19,10 @@
             {
                 "AttributeName": "email",
                 "AttributeType": "S"
+            },
+            {
+                "AttributeName": "expoPushToken",
+                "AttributeType": "S"
             }
         ],
         "ProvisionedThroughput": {

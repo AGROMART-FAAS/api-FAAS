@@ -18,8 +18,14 @@ const createUsuario = function (content) {
 const deleteUsuario = function (id) {
     return dynamoDbLib.call("delete", { TableName: TABLE_NAME, Key: { id } });
 };
+
+const updateUsuario = function (params) {
+    return dynamoDbLib.call("update", params);
+};
+
 module.exports = {
     getUsuarios,
     createUsuario,
     deleteUsuario,
+    updateUsuario,
 };
