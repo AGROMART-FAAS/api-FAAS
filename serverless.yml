@@ -37,17 +37,15 @@ provider:
         STAGE: ${opt:stage, 'dev'}
         DYNAMODB_TABLE_ASSINANTES: AssinantesTable
         DYNAMODB_TABLE_USUARIOS: UsuariosTable
+        DYNAMODB_TABLE_LOJAS: LojasTable
+        DYNAMODB_TABLE_CESTAS: CestasTable
+
     iamRoleStatements:
         - Effect: Allow
           Action:
-              - dynamodb:DescribeTable
-              - dynamodb:Query
-              - dynamodb:Scan
-              - dynamodb:GetItem
-              - dynamodb:PutItem
-              - dynamodb:UpdateItem
-              - dynamodb:DeleteItem
-          Resource: "arn:aws:dynamodb:us-east-1:*:*"
+              - dynamodb:*
+          Resource:
+              - arn:aws:dynamodb:us-east-1:*:table/Lojas
 
 functions:
     getAssinante:
@@ -99,7 +97,21 @@ functions:
                   path: lojas
                   method: post
                   cors: true
+    createCesta:
+        handler: handlers/cesta.createCesta
+        events:
+            - http:
+                  path: cestas
+                  method: post
+                  cors: true
 
+    getCestas:
+        handler: handlers/cesta.getCestas
+        events:
+            - http:
+                  path: cestas
+                  method: get
+                  cors: true
 resources:
     Resources:
         AssinantesTable:
@@ -139,6 +151,17 @@ resources:
             Type: AWS::DynamoDB::Table
             Properties:
                 TableName: LojasTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        CestasTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: CestasTable
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S

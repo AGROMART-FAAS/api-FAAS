@@ -1,0 +1,38 @@
+{
+    "Table": {
+        "TableName": "CestasTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        },
+        "AttributeDefinitionsExtended": {
+            "valor": {
+                "AttributeType": "N"
+            },
+            "quantidade": {
+                "AttributeType": "N"
+            },
+            "descricao": {
+                "AttributeType": "S"
+            },
+            "imagem": {
+                "AttributeType": "S"
+            },
+            "loja": {
+                "AttributeType": "L"
+            }
+        }
+    }
+}

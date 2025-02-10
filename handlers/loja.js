@@ -11,7 +11,6 @@ exports.getLojas = async (event) => {
 
         const result = await repo.GetLojas(params);
 
-        // Transformando os dados para garantir compatibilidade com o Strapi
         return {
             statusCode: 200,
             body: JSON.stringify(
