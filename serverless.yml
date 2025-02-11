@@ -36,9 +36,12 @@ provider:
     environment:
         STAGE: ${opt:stage, 'dev'}
         DYNAMODB_TABLE_ASSINANTES: AssinantesTable
-        DYNAMODB_TABLE_USUARIOS: UsuariosTable
-        DYNAMODB_TABLE_LOJAS: LojasTable
         DYNAMODB_TABLE_CESTAS: CestasTable
+        DYNAMODB_TABLE_ENDERECOS: EnderecosTable
+        DYNAMODB_TABLE_ITENS: ItensTable
+        DYNAMODB_TABLE_LOJAS: LojasTable
+        DYNAMODB_TABLE_USUARIOS: UsuariosTable
+        DYNAMODB_TABLE_NOTIFICACOES: NotificacoesTable
 
     iamRoleStatements:
         - Effect: Allow
@@ -173,7 +176,13 @@ functions:
             - http:
                   path: items/{id}
                   method: delete
-
+    getNotificacoes:
+        handler: handlers/notificacao.getNotificacoes
+        events:
+            - http:
+                  path: notificacoes
+                  method: get
+                  cors: true
 resources:
     Resources:
         AssinantesTable:
@@ -242,6 +251,17 @@ resources:
                       AttributeType: N
                     - AttributeName: valor
                       AttributeType: N
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        NotificacoesTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: NotificacoesTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH

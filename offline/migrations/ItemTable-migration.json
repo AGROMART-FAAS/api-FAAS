@@ -1,0 +1,37 @@
+{
+    "Table": {
+        "TableName": "ItemsTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "quantidade",
+                "AttributeType": "N"
+            },
+            {
+                "AttributeName": "valor",
+                "AttributeType": "N"
+            },
+            {
+                "AttributeName": "produto_avulso_id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "plano_id",
+                "AttributeType": "S"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}
