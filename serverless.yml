@@ -137,12 +137,42 @@ functions:
                   cors: true
 
     getEnderecoByUser:
-        handler: handlers/enderecoHandler.getEnderecoByUser
+        handler: handlers/endereco.getEnderecoByUser
         events:
             - http:
                   path: endereco/user/{user_id}
                   method: get
                   cors: true
+    createItem:
+        handler: handlers/item.createItem
+        events:
+            - http:
+                  path: items
+                  method: post
+    getItem:
+        handler: handlers/item.getItem
+        events:
+            - http:
+                  path: items/{id}
+                  method: get
+    listItems:
+        handler: handlers/item.listItem
+        events:
+            - http:
+                  path: items
+                  method: get
+    updateItem:
+        handler: handlers/item.updateItem
+        events:
+            - http:
+                  path: items/{id}
+                  method: put
+    deleteItem:
+        handler: handler.deleteItem
+        events:
+            - http:
+                  path: items/{id}
+                  method: delete
 
 resources:
     Resources:
@@ -197,6 +227,21 @@ resources:
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        ItensTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ItemTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                    - AttributeName: quantidade
+                      AttributeType: N
+                    - AttributeName: valor
+                      AttributeType: N
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH

@@ -1,0 +1,67 @@
+{
+    "Table": {
+        "TableName": "EnderecosTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "cidade",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "numero",
+                "AttributeType": "N"
+            },
+            {
+                "AttributeName": "complemento",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "cep",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "rua",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "bairro",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "userId",
+                "AttributeType": "S"
+            }
+        ],
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexName": "userIndex",
+                "KeySchema": [
+                    {
+                        "AttributeName": "userId",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "Projection": {
+                    "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 1,
+                    "WriteCapacityUnits": 1
+                }
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}

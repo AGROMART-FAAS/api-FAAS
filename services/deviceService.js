@@ -18,7 +18,7 @@ const updateDevice = async (body) => {
             ReturnValues: "ALL_NEW",
         };
 
-        const result = await repo(params);
+        const result = await repo.updateUsuario(params);
         return result.Attributes;
     } catch (error) {
         throw new Error(error.message);
