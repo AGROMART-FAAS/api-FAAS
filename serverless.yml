@@ -42,6 +42,7 @@ provider:
         DYNAMODB_TABLE_LOJAS: LojasTable
         DYNAMODB_TABLE_USUARIOS: UsuariosTable
         DYNAMODB_TABLE_NOTIFICACOES: NotificacoesTable
+        DYNAMODB_TABLE_PLANO: PlanoTable
 
     iamRoleStatements:
         - Effect: Allow
@@ -183,6 +184,21 @@ functions:
                   path: notificacoes
                   method: get
                   cors: true
+    getPlanos:
+        handler: handlers/plano.getPlanos
+        events:
+            - http:
+                  path: planos
+                  method: get
+                  cors: true
+    createPlano:
+        handler: handlers/plano.createPlano
+        events:
+            - http:
+                  path: planos
+                  method: post
+                  cors: true
+
 resources:
     Resources:
         AssinantesTable:
@@ -259,6 +275,17 @@ resources:
             Type: AWS::DynamoDB::Table
             Properties:
                 TableName: NotificacoesTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        PlanosTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: PlanosTable
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
