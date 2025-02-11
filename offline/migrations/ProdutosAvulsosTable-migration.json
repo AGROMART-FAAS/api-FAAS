@@ -1,0 +1,49 @@
+{
+    "Table": {
+        "TableName": "ProdutosAvulsosTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "nome",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "unidade_medida",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "descricao",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "valor",
+                "AttributeType": "N"
+            },
+            {
+                "AttributeName": "quantidade",
+                "AttributeType": "N"
+            },
+            {
+                "AttributeName": "imagem",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "loja_id",
+                "AttributeType": "S"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}

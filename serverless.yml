@@ -42,7 +42,8 @@ provider:
         DYNAMODB_TABLE_LOJAS: LojasTable
         DYNAMODB_TABLE_USUARIOS: UsuariosTable
         DYNAMODB_TABLE_NOTIFICACOES: NotificacoesTable
-        DYNAMODB_TABLE_PLANO: PlanoTable
+        DYNAMODB_TABLE_PLANOS: PlanosTable
+        DYNAMODB_TABLE_PRODUTOSAVULSOS: ProdutosAvulsosTable
 
     iamRoleStatements:
         - Effect: Allow
@@ -198,6 +199,20 @@ functions:
                   path: planos
                   method: post
                   cors: true
+    getProdutosAvulsos:
+        handler: handlers/produtoAvulso.getProdutosAvulsos
+        events:
+            - http:
+                  path: produtos-avulsos
+                  method: get
+                  cors: true
+    createProdutoAvulso:
+        handler: handlers/produtoAvulso.createProdutoAvulso
+        events:
+            - http:
+                  path: produtos-avulsos
+                  method: post
+                  cors: true
 
 resources:
     Resources:
@@ -286,6 +301,17 @@ resources:
             Type: AWS::DynamoDB::Table
             Properties:
                 TableName: PlanosTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        ProdutosAvulsosTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: ProdutosAvulsosTable
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
