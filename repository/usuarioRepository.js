@@ -2,13 +2,13 @@
 const TABLE_NAME = "UsuariosTable";
 const dynamoDbLib = require("./dynamodb-client-config");
 
-const getUserByNome = async function (nome) {
+const getUserByemail = async function (email) {
     const params = {
         TableName: TABLE_NAME,
-        IndexName: "NomeIndex",
-        KeyConditionExpression: "nome = :nome",
+        IndexName: "EmailIndex",
+        KeyConditionExpression: "email = :email",
         ExpressionAttributeValues: {
-            ":nome": nome,
+            ":email": email,
         },
     };
 
@@ -46,5 +46,5 @@ module.exports = {
     createUsuario,
     deleteUsuario,
     updateUsuario,
-    getUserByNome,
+    getUserByemail,
 };

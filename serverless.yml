@@ -250,15 +250,15 @@ resources:
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
-                    - AttributeName: nome
+                    - AttributeName: email
                       AttributeType: S
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
                 GlobalSecondaryIndexes:
-                    - IndexName: NomeIndex
+                    - IndexName: EmailIndex
                       KeySchema:
-                          - AttributeName: nome
+                          - AttributeName: email
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL

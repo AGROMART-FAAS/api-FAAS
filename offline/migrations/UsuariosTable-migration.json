@@ -31,10 +31,10 @@
         ],
         "GlobalSecondaryIndexes": [
             {
-                "IndexName": "NomeIndex",
+                "IndexName": "EmailIndex",
                 "KeySchema": [
                     {
-                        "AttributeName": "nome",
+                        "AttributeName": "email",
                         "KeyType": "HASH"
                     }
                 ],

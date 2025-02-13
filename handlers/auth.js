@@ -4,24 +4,24 @@ const repo = require("../repository/usuarioRepository");
 
 exports.login = async (event) => {
     try {
-        const { nome, senha } = JSON.parse(event.body);
+        const { email, senha } = JSON.parse(event.body);
 
-        if (!nome || !senha) {
+        if (!email || !senha) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
-                    message: "Nome e senha são obrigatórios.",
+                    message: "Email e senha são obrigatórios.",
                 }),
             };
         }
 
-        const user = await repo.getUserByNome(nome);
+        const user = await repo.getUserByemail(email);
 
         if (!user) {
             return {
                 statusCode: 401,
                 body: JSON.stringify({
-                    message: "Usuário inválido.",
+                    message: "Email ou senha inválidos.",
                 }),
             };
         }
@@ -30,7 +30,7 @@ exports.login = async (event) => {
             return {
                 statusCode: 401,
                 body: JSON.stringify({
-                    message: "senha inválida.",
+                    message: "Email ou senha inválidos.",
                 }),
             };
         }
