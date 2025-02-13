@@ -213,6 +213,13 @@ functions:
                   path: produtos-avulsos
                   method: post
                   cors: true
+    login:
+        handler: handlers/auth.login
+        events:
+            - http:
+                  path: auth
+                  method: post
+                  cors: true
 
 resources:
     Resources:
@@ -243,9 +250,18 @@ resources:
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
+                    - AttributeName: nome
+                      AttributeType: S
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
+                GlobalSecondaryIndexes:
+                    - IndexName: NomeIndex
+                      KeySchema:
+                          - AttributeName: nome
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
                 ProvisionedThroughput:
                     ReadCapacityUnits: 5
                     WriteCapacityUnits: 5

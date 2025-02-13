@@ -2,6 +2,24 @@
 const TABLE_NAME = "UsuariosTable";
 const dynamoDbLib = require("./dynamodb-client-config");
 
+const getUserByNome = async function (nome) {
+    const params = {
+        TableName: TABLE_NAME,
+        IndexName: "NomeIndex",
+        KeyConditionExpression: "nome = :nome",
+        ExpressionAttributeValues: {
+            ":nome": nome,
+        },
+    };
+
+    try {
+        const result = await dynamoDbLib.call("query", params);
+        return result.Items.length > 0 ? result.Items[0] : null;
+    } catch (error) {
+        throw new Error("Erro ao buscar usuário: " + error.message);
+    }
+};
+
 const getUsuarios = function (params) {
     return params.IndexName
         ? dynamoDbLib.call("query", params)
@@ -28,4 +46,5 @@ module.exports = {
     createUsuario,
     deleteUsuario,
     updateUsuario,
+    getUserByNome,
 };

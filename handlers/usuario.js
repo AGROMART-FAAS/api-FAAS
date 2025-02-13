@@ -37,6 +37,7 @@ exports.createUsuario = async (event) => {
     const usuario = {
         id,
         nome: data.nome,
+        senha: data.senha,
         email: data.email,
         created_at: timestamp,
     };
@@ -45,10 +46,10 @@ exports.createUsuario = async (event) => {
         .createUsuario(usuario)
         .then((data) => ({
             statusCode: 200,
-            body: {
-                Mensagem: JSON.stringify("Usuário criado com sucesso"),
+            body: JSON.stringify({
+                Mensagem: "Usuário criado com sucesso",
                 data: data,
-            },
+            }),
         }))
         .catch((err) => ({
             statusCode: 500,

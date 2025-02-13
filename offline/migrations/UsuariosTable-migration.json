@@ -17,12 +17,30 @@
                 "AttributeType": "S"
             },
             {
+                "AttributeName": "senha",
+                "AttributeType": "S"
+            },
+            {
                 "AttributeName": "email",
                 "AttributeType": "S"
             },
             {
                 "AttributeName": "expoPushToken",
                 "AttributeType": "S"
+            }
+        ],
+        "GlobalSecondaryIndexes": [
+            {
+                "IndexName": "NomeIndex",
+                "KeySchema": [
+                    {
+                        "AttributeName": "nome",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "Projection": {
+                    "ProjectionType": "ALL"
+                }
             }
         ],
         "ProvisionedThroughput": {
