@@ -44,9 +44,8 @@ provider:
         DYNAMODB_TABLE_NOTIFICACOES: NotificacoesTable
         DYNAMODB_TABLE_PLANOS: PlanosTable
         DYNAMODB_TABLE_PRODUTOSAVULSOS: ProdutosAvulsosTable
-
     iamRoleStatements:
-        #Permite que todas as Functions tenha todas as Actions no Dynamodb
+        #Permite que todas as Functions tenham todas as Actions no Dynamodb
         - Effect: Allow
           Action:
               - dynamodb:*
