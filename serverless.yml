@@ -46,11 +46,12 @@ provider:
         DYNAMODB_TABLE_PRODUTOSAVULSOS: ProdutosAvulsosTable
 
     iamRoleStatements:
+        #Permite que todas as Functions tenha todas as Actions no Dynamodb
         - Effect: Allow
           Action:
               - dynamodb:*
           Resource:
-              - arn:aws:dynamodb:us-east-1:*:table/Lojas
+              - arn:aws:dynamodb:us-east-1:*:table/*
 
 functions:
     getAssinante:
