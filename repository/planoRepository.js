@@ -13,19 +13,7 @@ const getPlanos = async function () {
     }
 };
 
-const createPlano = async function (data) {
-    const novoPlano = {
-        id: Date.now().toString(),
-        nome: data.nome,
-        descricao: data.descricao,
-        valor: data.valor,
-        quantidade_de_cestas: data.quantidade_de_cestas,
-        quantidade: data.quantidade || 0,
-        imagem: data.imagem || "",
-        assinantes: data.assinantes || [],
-        lojas: data.lojas || [],
-    };
-
+const createPlano = async function (novoPlano) {
     try {
         await dynamoDbLib.call("put", {
             TableName: TABLE_NAME,
