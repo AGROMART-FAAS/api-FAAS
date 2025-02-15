@@ -2,6 +2,7 @@
 
 const repo = require("../repository/lojaRepository");
 const { v4: uuidv4 } = require("uuid");
+const TABLE_NAME = "LojasTable";
 
 // Função para buscar todas as lojas
 exports.getLojas = async (event) => {
@@ -27,7 +28,7 @@ exports.createLoja = async (event) => {
     const timestamp = new Date().toISOString();
 
     const loja = {
-        id,
+        id: id,
         nome: data.nome,
         descricao: data.descricao || "Descrição",
         banner: data.banner || null,
@@ -62,7 +63,7 @@ exports.updateLoja = async (event) => {
         const id = event.pathParameters?.id;
         const data = JSON.parse(event.body);
 
-        if (!id) {
+        if (!id || Object.keys(data).length === 0) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({
@@ -71,7 +72,63 @@ exports.updateLoja = async (event) => {
             };
         }
 
-        const lojaAtualizada = await repo.updateLoja(id, data);
+        const params = {
+            TableName: TABLE_NAME,
+            Key: { id },
+            UpdateExpression: "set ",
+            ExpressionAttributeValues: {},
+            ExpressionAttributeNames: {},
+            ReturnValues: "UPDATED_NEW",
+        };
+
+        let updateFields = [];
+
+        if (data.nome) {
+            updateFields.push("#nome = :nome");
+            params.ExpressionAttributeValues[":nome"] = data.nome;
+            params.ExpressionAttributeNames["#nome"] = "nome";
+        }
+
+        if (data.endereco) {
+            updateFields.push("#endereco = :endereco");
+            params.ExpressionAttributeValues[":endereco"] = data.endereco;
+            params.ExpressionAttributeNames["#endereco"] = "endereco";
+        }
+
+        if (data.telefone) {
+            updateFields.push("#telefone = :telefone");
+            params.ExpressionAttributeValues[":telefone"] = data.telefone;
+            params.ExpressionAttributeNames["#telefone"] = "telefone";
+        }
+
+        if (data.cestas) {
+            updateFields.push("#cestas = :cestas");
+            params.ExpressionAttributeValues[":cestas"] = data.cestas;
+            params.ExpressionAttributeNames["#cestas"] = "cestas";
+        }
+
+        if (data.planos) {
+            updateFields.push("#planos = :planos");
+            params.ExpressionAttributeValues[":planos"] = data.planos;
+            params.ExpressionAttributeNames["#planos"] = "planos";
+        }
+
+        if (data.produtos) {
+            updateFields.push("#produtos = :produtos");
+            params.ExpressionAttributeValues[":produtos"] = data.produtos;
+            params.ExpressionAttributeNames["#produtos"] = "produtos";
+        }
+
+        // Se houver campos para atualizar, adicionamos à query
+        if (updateFields.length > 0) {
+            params.UpdateExpression += updateFields.join(", ");
+        } else {
+            throw new Error(
+                "Nenhum campo válido foi enviado para atualização."
+            );
+        }
+
+        const lojaAtualizada = await repo.updateLoja(params);
 
         return {
             statusCode: 200,

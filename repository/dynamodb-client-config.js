@@ -10,9 +10,8 @@ if (process.env.IS_OFFLINE) {
     };
 }
 
-AWS.config.update({ region: "us-east-1" });
-
 AWS.config.update({
+    region: "us-east-1",
     maxRetries: 2,
     httpOptions: {
         timeout: 30000,
@@ -20,8 +19,9 @@ AWS.config.update({
     },
 });
 
+const dynamoDb = new AWS.DynamoDB.DocumentClient(options);
+
 const call = function (action, params) {
-    const dynamoDb = new AWS.DynamoDB.DocumentClient(options);
     return dynamoDb[action](params).promise();
 };
 

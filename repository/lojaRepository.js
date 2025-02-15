@@ -7,8 +7,6 @@ const getAllLojas = async function () {
         TableName: TABLE_NAME,
     };
     const result = await dynamoDbLib.call("scan", params);
-    console.log("result: ");
-    console.log(result);
     return result.Items ? result : [];
 };
 
@@ -67,32 +65,7 @@ const createLoja = async function (content) {
     return dynamoDbLib.call("put", { TableName: TABLE_NAME, Item: content });
 };
 
-const updateLoja = async function (id, data) {
-    // Criando a estrutura da expressão de atualização dinamicamente
-    let updateExpression = "SET ";
-    let expressionAttributeValues = {};
-    let expressionAttributeNames = {};
-    let updateFields = [];
-
-    Object.keys(data).forEach((key) => {
-        const attributeKey = `#${key}`;
-        const valueKey = `:${key}`;
-        updateFields.push(`${attributeKey} = ${valueKey}`);
-        expressionAttributeValues[valueKey] = data[key];
-        expressionAttributeNames[attributeKey] = key;
-    });
-
-    updateExpression += updateFields.join(", ");
-
-    const params = {
-        TableName: TABLE_NAME,
-        Key: { id },
-        UpdateExpression: updateExpression,
-        ExpressionAttributeValues: expressionAttributeValues,
-        ExpressionAttributeNames: expressionAttributeNames,
-        ReturnValues: "ALL_NEW",
-    };
-
+const updateLoja = async function (params) {
     try {
         const result = await dynamoDbLib.call("update", params);
         return result.Attributes;
