@@ -21,8 +21,6 @@ exports.updateDevice = async (event) => {
     }
 };
 
-const deviceService = require("../services/deviceService");
-
 exports.findUserExpoPushToken = async (event) => {
     try {
         const { user_id } = event.pathParameters;

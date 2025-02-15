@@ -62,7 +62,7 @@ exports.createLoja = async (event) => {
     };
 
     return repo
-        .CreateLoja(loja)
+        .createLoja(loja)
         .then(() => ({
             statusCode: 200,
             body: JSON.stringify({ message: "Loja criada com sucesso" }),

@@ -2,15 +2,15 @@
 const TABLE_NAME = "LojasTable";
 const dynamoDbLib = require("./dynamodb-client-config");
 
-const GetLojas = function (params) {
+const getLojas = function (params) {
     return dynamoDbLib.call("scan", params);
 };
 
-const CreateLoja = function (content) {
+const createLoja = function (content) {
     return dynamoDbLib.call("put", { TableName: TABLE_NAME, Item: content });
 };
 
 module.exports = {
-    GetLojas,
-    CreateLoja,
+    getLojas,
+    createLoja,
 };

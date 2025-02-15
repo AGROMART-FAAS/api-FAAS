@@ -1,6 +1,6 @@
 const repo = require("../repository/usuarioRepository");
 
-const TABLE_NAME = "UsersTable";
+const TABLE_NAME = "UsuariosTable";
 
 const updateDevice = async (body) => {
     try {
