@@ -1,5 +1,5 @@
 "use strict";
-const TABLE_NAME = "lojaTable";
+const TABLE_NAME = "LojasTable";
 const dynamoDbLib = require("./dynamodb-client-config");
 
 const getLojas = function (params) {
