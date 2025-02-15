@@ -6,30 +6,11 @@ const { v4: uuidv4 } = require("uuid");
 // Função para buscar todas as lojas
 exports.getLojas = async (event) => {
     try {
-        let params = {
-            TableName: "LojasTable",
-        };
-
-        const result = await repo.getLojas(params);
+        const lojas = await repo.getLojasComRelacionamentos();
 
         return {
             statusCode: 200,
-            body: JSON.stringify(
-                result.Items.map((loja) => ({
-                    id: loja.id,
-                    nome: loja.nome,
-                    descricao: loja.descricao || "Descrição",
-                    banner: loja.banner || null,
-                    tipos_de_entrega: loja.tipos_de_entrega,
-                    contato: loja.contato,
-                    cnpj: loja.cnpj,
-                    endereco: loja.endereco || null,
-                    cestas: loja.cestas || [],
-                    planos: loja.planos || [],
-                    assinantes: loja.assinantes || [],
-                    produto_avulsos: loja.produto_avulsos || [],
-                }))
-            ),
+            body: JSON.stringify(lojas),
         };
     } catch (error) {
         console.error("Erro ao buscar lojas:", error);
@@ -74,4 +55,38 @@ exports.createLoja = async (event) => {
                 error: err.message,
             }),
         }));
+};
+
+exports.updateLoja = async (event) => {
+    try {
+        const id = event.pathParameters?.id;
+        const data = JSON.parse(event.body);
+
+        if (!id) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    message: "ID da loja é obrigatório para atualização.",
+                }),
+            };
+        }
+
+        const lojaAtualizada = await repo.updateLoja(id, data);
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: "Loja atualizada com sucesso.",
+                loja: lojaAtualizada,
+            }),
+        };
+    } catch (error) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: "Erro ao atualizar a loja.",
+                error: error.message,
+            }),
+        };
+    }
 };

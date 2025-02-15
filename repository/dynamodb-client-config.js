@@ -25,4 +25,26 @@ const call = function (action, params) {
     return dynamoDb[action](params).promise();
 };
 
-module.exports = { call };
+// Buscar múltiplos itens de uma vez
+const batchGet = async (tableName, ids) => {
+    if (ids.length === 0) return [];
+
+    const params = {
+        RequestItems: {
+            [tableName]: {
+                Keys: ids.map((id) => ({ id })),
+            },
+        },
+    };
+
+    try {
+        const result = await dynamoDb.batchGet(params).promise();
+        return result.Responses[tableName] || [];
+    } catch (error) {
+        throw new Error(
+            `Erro ao buscar múltiplos itens em ${tableName}: ` + error.message
+        );
+    }
+};
+
+module.exports = { call, batchGet };

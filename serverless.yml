@@ -102,6 +102,13 @@ functions:
                   path: lojas
                   method: post
                   cors: true
+    updateLoja:
+        handler: handlers/loja.updateLoja
+        events:
+            - http:
+                  path: lojas/{id}
+                  method: put
+                  cors: true
     createCesta:
         handler: handlers/cesta.createCesta
         events:

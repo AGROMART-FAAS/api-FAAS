@@ -16,12 +16,12 @@ exports.createCesta = async (event) => {
         };
 
         return repo
-            .createCesta(assinante)
+            .createCesta(cesta)
             .then((data) => {
                 return {
                     statusCode: 200,
                     body: JSON.stringify({
-                        message: "Cesta criada com sucesso",
+                        Mensagem: "Cesta criada com sucesso",
                         data: data,
                     }),
                 };
@@ -31,14 +31,18 @@ exports.createCesta = async (event) => {
                 return {
                     statusCode: 500,
                     body: JSON.stringify({
-                        message: "Erro ao salvar",
+                        Mensagem: "Erro ao salvar",
+                        Erro: err,
                     }),
                 };
             });
     } catch (error) {
         return {
             statusCode: 500,
-            body: JSON.stringify({ error: "Erro ao criar a cesta." }),
+            body: JSON.stringify({
+                Mensagem: "Erro ao criar a cesta.",
+                Erro: error,
+            }),
         };
     }
 };
@@ -49,7 +53,7 @@ exports.getCestas = async (event) => {
             TableName: "CestasTable",
         };
 
-        const result = await repo.GetCestas(params);
+        const result = await repo.getCestas(params);
 
         return {
             statusCode: 200,
