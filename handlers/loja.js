@@ -1,6 +1,7 @@
 "use strict";
 
 const repo = require("../repository/lojaRepository");
+const { v4: uuidv4 } = require("uuid");
 
 // Função para buscar todas as lojas
 exports.getLojas = async (event) => {
@@ -9,7 +10,7 @@ exports.getLojas = async (event) => {
             TableName: "LojasTable",
         };
 
-        const result = await repo.GetLojas(params);
+        const result = await repo.getLojas(params);
 
         return {
             statusCode: 200,
@@ -49,9 +50,9 @@ exports.createLoja = async (event) => {
         nome: data.nome,
         descricao: data.descricao || "Descrição",
         banner: data.banner || null,
-        tipos_de_entrega: data.tipos_de_entrega,
-        contato: data.contato,
-        cnpj: data.cnpj,
+        tipos_de_entrega: data.tipos_de_entrega || null,
+        contato: data.contato || null,
+        cnpj: data.cnpj || null,
         endereco: data.endereco || null,
         cestas: data.cestas || [],
         planos: data.planos || [],
