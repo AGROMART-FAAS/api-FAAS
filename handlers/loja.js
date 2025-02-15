@@ -9,7 +9,7 @@ exports.getLojas = async (event) => {
             TableName: "LojasTable",
         };
 
-        const result = await repo.GetLojas(params);
+        const result = await repo.getLojas(params);
 
         return {
             statusCode: 200,
