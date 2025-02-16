@@ -70,7 +70,7 @@
             "assinantes": {
                 "AttributeType": "L"
             },
-            "produto_avulsos": {
+            "produtos": {
                 "AttributeType": "L"
             }
         }

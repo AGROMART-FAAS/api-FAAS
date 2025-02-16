@@ -14,18 +14,7 @@ const getProdutosAvulsos = async function () {
     }
 };
 
-const createProdutoAvulso = async function (data) {
-    const novoProduto = {
-        id: Date.now().toString(),
-        nome: data.nome,
-        unidade_medida: data.unidade_medida || "",
-        descricao: data.descricao || "",
-        valor: data.valor || 0,
-        quantidade: data.quantidade || 0,
-        imagem: data.imagem || "",
-        loja_id: data.loja_id || "",
-    };
-
+const createProdutoAvulso = async function (novoProduto) {
     try {
         await dynamoDbLib.call("put", {
             TableName: TABLE_NAME,

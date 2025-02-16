@@ -1,5 +1,5 @@
 "use strict";
-
+const { v4: uuidv4 } = require("uuid");
 const repo = require("../repository/produtoAvulsoRepository");
 
 exports.getProdutosAvulsos = async (event, context) => {
@@ -33,13 +33,23 @@ exports.getProdutosAvulsos = async (event, context) => {
 exports.createProdutoAvulso = async (event, context) => {
     try {
         const data = JSON.parse(event.body);
-        const produto = await repo.createProdutoAvulso(data);
+        const novoProduto = {
+            id: uuidv4(),
+            nome: data.nome,
+            unidade_medida: data.unidade_medida || "",
+            descricao: data.descricao || "",
+            valor: data.valor || 0,
+            quantidade: data.quantidade || 0,
+            imagem: data.imagem || "",
+            loja_id: data.loja_id || "",
+        };
+        const produto = await repo.createProdutoAvulso(novoProduto);
 
         return {
             statusCode: 201,
             body: JSON.stringify({
                 message: "Produto avulso criado com sucesso",
-                produto,
+                data: produto,
             }),
         };
     } catch (error) {
