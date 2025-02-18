@@ -141,7 +141,7 @@ functions:
                   cors: true
 
     createEndereco:
-        handler: handlers/enderecoHandler.createEndereco
+        handler: handlers/endereco.createEndereco
         events:
             - http:
                   path: endereco
@@ -152,9 +152,18 @@ functions:
         handler: handlers/endereco.getEnderecoByUser
         events:
             - http:
-                  path: endereco/user/{user_id}
+                  path: endereco/user/{userId}
                   method: get
                   cors: true
+
+    updateEndereco:
+        handler: handlers/endereco.updateEndereco
+        events:
+            - http:
+                  path: endereco/user/{enderecoId}
+                  method: put
+                  cors: true
+
     createItem:
         handler: handlers/item.createItem
         events:
@@ -335,4 +344,24 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
+                BillingMode: PAY_PER_REQUEST
+        EnderecosTable:
+            Type: AWS::DynamoDB::Table
+            Properties:
+                TableName: EnderecosTable
+                AttributeDefinitions:
+                    - AttributeName: id
+                      AttributeType: S
+                    - AttributeName: userId
+                      AttributeType: S
+                KeySchema:
+                    - AttributeName: id
+                      KeyType: HASH
+                GlobalSecondaryIndexes:
+                    - IndexName: UserIndex
+                      KeySchema:
+                          - AttributeName: userId
+                            KeyType: HASH
+                      Projection:
+                          ProjectionType: ALL
                 BillingMode: PAY_PER_REQUEST

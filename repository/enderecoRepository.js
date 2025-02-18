@@ -2,15 +2,11 @@
 const TABLE_NAME = "EnderecosTable";
 const dynamoDbLib = require("./dynamodb-client-config");
 
-const getEnderecos = function () {
-    return dynamoDbLib.call("scan", { TableName: TABLE_NAME });
-};
-
 const getEnderecoByUser = function (userId) {
     const params = {
         TableName: TABLE_NAME,
         IndexName: "UserIndex",
-        KeyConditionExpression: "users = :userId",
+        KeyConditionExpression: "userId = :userId",
         ExpressionAttributeValues: {
             ":userId": userId,
         },
@@ -25,7 +21,12 @@ const createEndereco = function (endereco) {
     });
 };
 
+const updateEndereco = function (updateEndereco) {
+    return dynamoDbLib.call("update", updateEndereco);
+};
+
 module.exports = {
     getEnderecoByUser,
     createEndereco,
+    updateEndereco,
 };
