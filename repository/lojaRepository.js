@@ -22,7 +22,7 @@ const getLojasComRelacionamentos = async function () {
         lojas.forEach((loja) => {
             (loja.cestas || []).forEach((id) => idsCestas.add(id));
             (loja.planos || []).forEach((id) => idsPlanos.add(id));
-            (loja.produtos || []).forEach((id) => idsProdutos.add(id));
+            (loja.produto_avulsos || []).forEach((id) => idsProdutos.add(id));
         });
 
         // Buscando todas as entidades relacionadas de uma só vez
@@ -48,7 +48,7 @@ const getLojasComRelacionamentos = async function () {
             loja.planos = (loja.planos || []).map(
                 (id) => planosMap[id] || null
             );
-            loja.produtos = (loja.produtos || []).map(
+            loja.produto_avulsos = (loja.produto_avulsos || []).map(
                 (id) => produtosMap[id] || null
             );
         });
