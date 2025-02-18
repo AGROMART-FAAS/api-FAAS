@@ -24,22 +24,23 @@ exports.getLojas = async (event) => {
 
 exports.createLoja = async (event) => {
     const data = JSON.parse(event.body);
+    const lojaJson = data[0]
     const id = uuidv4();
     const timestamp = new Date().toISOString();
 
     const loja = {
         id: id,
-        nome: data.nome,
-        descricao: data.descricao || "Descrição",
-        banner: data.banner || null,
-        tipos_de_entrega: data.tipos_de_entrega || null,
-        contato: data.contato || null,
-        cnpj: data.cnpj || null,
-        endereco: data.endereco || null,
-        cestas: data.cestas || [],
-        planos: data.planos || [],
-        assinantes: data.assinantes || [],
-        produto_avulsos: data.produto_avulsos || [],
+        nome: lojaJson.nome,
+        descricao: lojaJson.descricao || "Descrição",
+        banner: lojaJson.banner || null,
+        tipos_de_entrega: lojaJson.tipos_de_entrega || null,
+        contato: lojaJson.contato || null,
+        cnpj: lojaJson.cnpj || null,
+        endereco: lojaJson.endereco || null,
+        cestas: lojaJson.cestas || [],
+        planos: lojaJson.planos || [],
+        assinantes: lojaJson.assinantes || [],
+        produto_avulsos: lojaJson.produto_avulsos || [],
         created_at: timestamp,
     };
 
