@@ -2,6 +2,7 @@
 
 const repo = require("../repository/usuarioRepository");
 const { v4: uuidv4 } = require("uuid");
+const TABLE_NAME = "UsuariosTable";
 
 // Função para obter usuários
 exports.getUsuarios = async (event) => {
@@ -82,5 +83,29 @@ exports.deleteUsuario = async (event) => {
             statusCode: 500,
             body: JSON.stringify({ error: error.message }),
         };
+    }
+};
+
+exports.updateUsuario = async (event) => {
+    try {
+        const data = JSON.parse(event.body);
+        const { id } = event.pathParameters;
+        const params = {
+            TableName: TABLE_NAME,
+            Key: { id: id },
+            UpdateExpression:
+                "set nome = :nome, senha = :senha, email = :email",
+            ExpressionAttributeValues: {
+                ":nome": data.nome,
+                ":senha": data.senha,
+                ":email": data.email,
+            },
+            ReturnValues: "UPDATED_NEW",
+        };
+
+        const result = await repo.updateUsuario(params);
+        return result.Attributes;
+    } catch (error) {
+        throw new Error(error.message);
     }
 };

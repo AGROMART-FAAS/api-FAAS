@@ -1,6 +1,6 @@
 {
     "Table": {
-        "TableName": "ItemsTable",
+        "TableName": "ItensTable",
         "KeySchema": [
             {
                 "AttributeName": "id",

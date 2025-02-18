@@ -88,6 +88,14 @@ functions:
                   path: usuarios/{id}
                   method: delete
                   cors: true
+    updateUsuario:
+        handler: handlers/usuario.updateUsuario
+        events:
+            - http:
+                  path: usuarios/{id}
+                  method: put
+                  cors: true
+
     getLojas:
         handler: handlers/loja.getLojas
         events:
@@ -304,7 +312,7 @@ resources:
         ItensTable:
             Type: AWS::DynamoDB::Table
             Properties:
-                TableName: ItemTable
+                TableName: ItensTable
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
