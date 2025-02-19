@@ -168,7 +168,7 @@ functions:
         handler: handlers/endereco.updateEndereco
         events:
             - http:
-                  path: endereco/user/{enderecoId}
+                  path: endereco/{enderecoId}
                   method: put
                   cors: true
 
