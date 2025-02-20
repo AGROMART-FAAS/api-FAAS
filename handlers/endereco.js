@@ -35,13 +35,16 @@ exports.createEndereco = async (event) => {
 
         const result = await repo.createEndereco(endereco);
 
-        return {
+        const retorno = {
             statusCode: 201,
             body: JSON.stringify({
                 mensagem: "Endereço criado com sucesso!",
-                data: result,
+                data: await result.params?.Item,
             }),
         };
+
+        return retorno;
+
     } catch (error) {
         return {
             statusCode: 500,
@@ -83,8 +86,38 @@ exports.getEnderecoByUser = async (event) => {
     }
 };
 
+exports.getEnderecoById = async (event) => {
+    try {
+        const { id } = event.pathParameters;
+        const endereco = await repo.getEnderecoById(id);
+
+        if (endereco.Count > 0) {
+            return {
+                statusCode: 200,
+                body: JSON.stringify({
+                    mensagem: "Endereço encontrado!",
+                    endereco,
+                }),
+            };
+        }
+
+        return {
+            statusCode: 404,
+            body: JSON.stringify({ mensagem: "Endereço não encontrado!" }),
+        };
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                mensagem: "Erro ao buscar endereço",
+                error: error.message,
+            }),
+        };
+    }
+};
+
 exports.updateEndereco = async (event) => {
-    const data = JSON.parse(event.body);
+    const endereco = JSON.parse(event.body);
     const { enderecoId } = event.pathParameters;
 
     const params = {
@@ -93,16 +126,23 @@ exports.updateEndereco = async (event) => {
         UpdateExpression:
             "set cidade = :c, numero = :n, complemento = :co, cep = :ce, rua=:r, bairro = :b, userId = :u",
         ExpressionAttributeValues: {
-            ":c": data.cidade,
-            ":n": data.numero,
-            ":co": data.complemento,
-            ":ce": data.cep,
-            ":r": data.rua,
-            ":b": data.bairro,
-            ":u": data.userId,
+            ":c": endereco.cidade,
+            ":n": endereco.numero,
+            ":co": endereco.complemento,
+            ":ce": endereco.cep,
+            ":r": endereco.rua,
+            ":b": endereco.bairro,
+            ":u": endereco.userId,
         },
         ReturnValues: "UPDATED_NEW",
     };
-    const result = await repo.updateEndereco(params);
-    return { statusCode: 200, body: JSON.stringify(result.Attributes) };
+    const result = await repo.updateEndereco(params, endereco);
+
+    return { 
+        statusCode: 200, 
+        body: JSON.stringify({
+            mensagem: "Endereço criado com sucesso!",
+            data: await result.params?.Item,
+        }) 
+    }
 };
