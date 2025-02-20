@@ -164,6 +164,14 @@ functions:
                   method: get
                   cors: true
 
+    getEnderecoById:
+        handler: handlers/endereco.getEnderecoById
+        events:
+            - http:
+                  path: endereco/{id}
+                  method: get
+                  cors: true
+
     updateEndereco:
         handler: handlers/endereco.updateEndereco
         events:
