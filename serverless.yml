@@ -31,8 +31,8 @@ provider:
     name: aws
     runtime: nodejs16.x
     region: ${opt:region, 'us-east-1'}
-    memorySize: 1024
-    timeout: 10
+    memorySize: 128
+    timeout: 5
     environment:
         STAGE: ${opt:stage, 'dev'}
         DYNAMODB_TABLE_ASSINANTES: AssinantesTable
@@ -55,6 +55,7 @@ provider:
 functions:
     getAssinante:
         handler: handlers/assinante.getAssinantes
+        reservedConcurrency: 2
         events:
             - http:
                   path: assinantes
@@ -62,6 +63,7 @@ functions:
                   cors: true
     createAssinante:
         handler: handlers/assinante.createAssinante
+        reservedConcurrency: 2
         events:
             - http:
                   path: assinantes
@@ -69,6 +71,7 @@ functions:
                   cors: true
     getUsuarios:
         handler: handlers/usuario.getUsuarios
+        reservedConcurrency: 2
         events:
             - http:
                   path: usuarios
@@ -76,6 +79,7 @@ functions:
                   cors: true
     createUsuario:
         handler: handlers/usuario.createUsuario
+        reservedConcurrency: 2
         events:
             - http:
                   path: usuarios
@@ -83,6 +87,7 @@ functions:
                   cors: true
     deleteUsuario:
         handler: handlers/usuario.deleteUsuario
+        reservedConcurrency: 2
         events:
             - http:
                   path: usuarios/{id}
@@ -90,6 +95,7 @@ functions:
                   cors: true
     updateUsuario:
         handler: handlers/usuario.updateUsuario
+        reservedConcurrency: 2
         events:
             - http:
                   path: usuarios/{id}
@@ -98,6 +104,7 @@ functions:
 
     getLojas:
         handler: handlers/loja.getLojas
+        reservedConcurrency: 2
         events:
             - http:
                   path: lojas
@@ -105,6 +112,7 @@ functions:
                   cors: true
     createLoja:
         handler: handlers/loja.createLoja
+        reservedConcurrency: 2
         events:
             - http:
                   path: lojas
@@ -112,6 +120,7 @@ functions:
                   cors: true
     updateLoja:
         handler: handlers/loja.updateLoja
+        reservedConcurrency: 2
         events:
             - http:
                   path: lojas/{id}
@@ -119,6 +128,7 @@ functions:
                   cors: true
     createCesta:
         handler: handlers/cesta.createCesta
+        reservedConcurrency: 2
         events:
             - http:
                   path: cestas
@@ -126,6 +136,7 @@ functions:
                   cors: true
     getCestas:
         handler: handlers/cesta.getCestas
+        reservedConcurrency: 2
         events:
             - http:
                   path: cestas
@@ -134,6 +145,7 @@ functions:
 
     updateDevice:
         handler: handlers/device.updateDevice
+        reservedConcurrency: 2
         events:
             - http:
                   path: devices
@@ -142,6 +154,7 @@ functions:
 
     findUserExpoPushToken:
         handler: handlers/device.findUserExpoPushToken
+        reservedConcurrency: 2
         events:
             - http:
                   path: devices/user/{user_id}
@@ -150,6 +163,7 @@ functions:
 
     createEndereco:
         handler: handlers/endereco.createEndereco
+        reservedConcurrency: 2
         events:
             - http:
                   path: endereco
@@ -158,6 +172,7 @@ functions:
 
     getEnderecoByUser:
         handler: handlers/endereco.getEnderecoByUser
+        reservedConcurrency: 2
         events:
             - http:
                   path: endereco/user/{userId}
@@ -166,6 +181,7 @@ functions:
 
     updateEndereco:
         handler: handlers/endereco.updateEndereco
+        reservedConcurrency: 2
         events:
             - http:
                   path: endereco/{enderecoId}
@@ -174,36 +190,42 @@ functions:
 
     createItem:
         handler: handlers/item.createItem
+        reservedConcurrency: 2
         events:
             - http:
                   path: items
                   method: post
     getItem:
         handler: handlers/item.getItem
+        reservedConcurrency: 2
         events:
             - http:
                   path: items/{id}
                   method: get
     listItems:
         handler: handlers/item.listItem
+        reservedConcurrency: 2
         events:
             - http:
                   path: items
                   method: get
     updateItem:
         handler: handlers/item.updateItem
+        reservedConcurrency: 2
         events:
             - http:
                   path: items/{id}
                   method: put
     deleteItem:
         handler: handler.deleteItem
+        reservedConcurrency: 2
         events:
             - http:
                   path: items/{id}
                   method: delete
     getNotificacoes:
         handler: handlers/notificacao.getNotificacoes
+        reservedConcurrency: 2
         events:
             - http:
                   path: notificacoes
@@ -211,6 +233,7 @@ functions:
                   cors: true
     getPlanos:
         handler: handlers/plano.getPlanos
+        reservedConcurrency: 2
         events:
             - http:
                   path: planos
@@ -218,6 +241,7 @@ functions:
                   cors: true
     createPlano:
         handler: handlers/plano.createPlano
+        reservedConcurrency: 2
         events:
             - http:
                   path: planos
@@ -225,6 +249,7 @@ functions:
                   cors: true
     getProdutosAvulsos:
         handler: handlers/produtoAvulso.getProdutosAvulsos
+        reservedConcurrency: 2
         events:
             - http:
                   path: produtos-avulsos
@@ -232,6 +257,7 @@ functions:
                   cors: true
     createProdutoAvulso:
         handler: handlers/produtoAvulso.createProdutoAvulso
+        reservedConcurrency: 2
         events:
             - http:
                   path: produtos-avulsos
@@ -239,6 +265,7 @@ functions:
                   cors: true
     login:
         handler: handlers/auth.login
+        reservedConcurrency: 2
         events:
             - http:
                   path: auth
@@ -259,7 +286,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
                 GlobalSecondaryIndexes:
                     - IndexName: GSI1
                       KeySchema:
@@ -267,6 +297,10 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
+                      BillingMode: PROVISIONED
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
         UsuariosTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -279,6 +313,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
                 GlobalSecondaryIndexes:
                     - IndexName: EmailIndex
                       KeySchema:
@@ -286,7 +324,10 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
-                BillingMode: PAY_PER_REQUEST
+                      BillingMode: PROVISIONED
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
         LojasTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -297,7 +338,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         CestasTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -308,7 +352,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         ItensTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -319,7 +366,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         NotificacoesTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -330,7 +380,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         PlanosTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -341,7 +394,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         ProdutosAvulsosTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -352,7 +408,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                BillingMode: PAY_PER_REQUEST
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
         EnderecosTable:
             Type: AWS::DynamoDB::Table
             Properties:
@@ -365,6 +424,10 @@ resources:
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
+                BillingMode: PROVISIONED
+                ProvisionedThroughput:
+                    ReadCapacityUnits: 1
+                    WriteCapacityUnits: 1
                 GlobalSecondaryIndexes:
                     - IndexName: UserIndex
                       KeySchema:
@@ -372,4 +435,50 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
-                BillingMode: PAY_PER_REQUEST
+                      BillingMode: PROVISIONED
+                      ProvisionedThroughput:
+                          ReadCapacityUnits: 1
+                          WriteCapacityUnits: 1
+
+        AgroMartTableScalingRead:
+            Type: AWS::ApplicationAutoScaling::ScalableTarget
+            Properties:
+                MaxCapacity: 2 #Define um limite máximo de 2 leituras simultâneas
+                MinCapacity: 1
+                ResourceId: table/*
+                RoleARN: arn:aws:iam::123456789012:role/DynamoDBAutoScalingRole
+                ScalableDimension: dynamodb:table:ReadCapacityUnits
+                ServiceNamespace: dynamodb
+
+        AgroMartTableScalingWrite:
+            Type: AWS::ApplicationAutoScaling::ScalableTarget
+            Properties:
+                MaxCapacity: 2 # 🔹 Define um limite máximo de 2 escritas simultâneas
+                MinCapacity: 1
+                ResourceId: table/*
+                RoleARN: arn:aws:iam::123456789012:role/DynamoDBAutoScalingRole
+                ScalableDimension: dynamodb:table:WriteCapacityUnits
+                ServiceNamespace: dynamodb
+# BudgetAlarm:
+#     Type: AWS::Budgets::Budget
+#     Properties:
+#         Budget:
+#             BudgetLimit:
+#                 Amount: 5 # 🔹 Alerta ao atingir $5 de custo
+#                 Unit: USD
+#             TimeUnit: MONTHLY
+#             BudgetType: COST
+#             CostFilters:
+#                 Service:
+#                     - AWSLambda
+#                     - AmazonDynamoDB
+#         NotificationsWithSubscribers:
+#             - Notification:
+#                   NotificationType: ACTUAL # 🔹 Baseado no valor real consumido
+#                   ComparisonOperator: GREATER_THAN
+#                   Threshold: 80 # 🔹 Enviar alerta quando atingir 80% do orçamento
+#                   ThresholdType: PERCENTAGE
+#               Subscribers:
+#                   - SubscriptionType: EMAIL
+#                     Address: "seu-email@exemplo.com" # 🔹 Troque pelo e-mail desejado
+
