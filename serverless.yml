@@ -48,14 +48,16 @@ provider:
         #Permite que todas as Functions tenham todas as Actions no Dynamodb
         - Effect: Allow
           Action:
+              - application-autoscaling:*
               - dynamodb:*
+              - iam:PassRole
           Resource:
               - arn:aws:dynamodb:us-east-1:*:table/*
 
 functions:
     getAssinante:
         handler: handlers/assinante.getAssinantes
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: assinantes
@@ -63,7 +65,7 @@ functions:
                   cors: true
     createAssinante:
         handler: handlers/assinante.createAssinante
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: assinantes
@@ -71,7 +73,7 @@ functions:
                   cors: true
     getUsuarios:
         handler: handlers/usuario.getUsuarios
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: usuarios
@@ -79,7 +81,7 @@ functions:
                   cors: true
     createUsuario:
         handler: handlers/usuario.createUsuario
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: usuarios
@@ -87,7 +89,7 @@ functions:
                   cors: true
     deleteUsuario:
         handler: handlers/usuario.deleteUsuario
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: usuarios/{id}
@@ -95,7 +97,7 @@ functions:
                   cors: true
     updateUsuario:
         handler: handlers/usuario.updateUsuario
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: usuarios/{id}
@@ -104,7 +106,7 @@ functions:
 
     getLojas:
         handler: handlers/loja.getLojas
-        reservedConcurrency: 2
+        #reservedConcurrency: 1
         events:
             - http:
                   path: lojas
@@ -112,7 +114,7 @@ functions:
                   cors: true
     createLoja:
         handler: handlers/loja.createLoja
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: lojas
@@ -120,7 +122,7 @@ functions:
                   cors: true
     updateLoja:
         handler: handlers/loja.updateLoja
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: lojas/{id}
@@ -128,7 +130,7 @@ functions:
                   cors: true
     createCesta:
         handler: handlers/cesta.createCesta
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: cestas
@@ -136,7 +138,7 @@ functions:
                   cors: true
     getCestas:
         handler: handlers/cesta.getCestas
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: cestas
@@ -145,7 +147,7 @@ functions:
 
     updateDevice:
         handler: handlers/device.updateDevice
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: devices
@@ -154,7 +156,7 @@ functions:
 
     findUserExpoPushToken:
         handler: handlers/device.findUserExpoPushToken
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: devices/user/{user_id}
@@ -163,7 +165,7 @@ functions:
 
     createEndereco:
         handler: handlers/endereco.createEndereco
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: endereco
@@ -172,7 +174,7 @@ functions:
 
     getEnderecoByUser:
         handler: handlers/endereco.getEnderecoByUser
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: endereco/user/{userId}
@@ -181,6 +183,7 @@ functions:
 
     getEnderecoById:
         handler: handlers/endereco.getEnderecoById
+
         events:
             - http:
                   path: endereco/{id}
@@ -189,51 +192,51 @@ functions:
 
     updateEndereco:
         handler: handlers/endereco.updateEndereco
-        reservedConcurrency: 2
+
         events:
             - http:
-                  path: endereco/{enderecoId}
+                  path: endereco/{id}
                   method: put
                   cors: true
 
     createItem:
         handler: handlers/item.createItem
-        reservedConcurrency: 2
+
         events:
             - http:
-                  path: items
+                  path: itens
                   method: post
     getItem:
         handler: handlers/item.getItem
-        reservedConcurrency: 2
+
         events:
             - http:
-                  path: items/{id}
+                  path: itens/{id}
                   method: get
     listItems:
         handler: handlers/item.listItem
-        reservedConcurrency: 2
+
         events:
             - http:
-                  path: items
+                  path: itens
                   method: get
     updateItem:
         handler: handlers/item.updateItem
-        reservedConcurrency: 2
+
         events:
             - http:
-                  path: items/{id}
+                  path: itens/{id}
                   method: put
     deleteItem:
         handler: handler.deleteItem
-        reservedConcurrency: 2
+
         events:
             - http:
-                  path: items/{id}
+                  path: itens/{id}
                   method: delete
     getNotificacoes:
         handler: handlers/notificacao.getNotificacoes
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: notificacoes
@@ -241,7 +244,7 @@ functions:
                   cors: true
     getPlanos:
         handler: handlers/plano.getPlanos
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: planos
@@ -249,7 +252,7 @@ functions:
                   cors: true
     createPlano:
         handler: handlers/plano.createPlano
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: planos
@@ -257,7 +260,7 @@ functions:
                   cors: true
     getProdutosAvulsos:
         handler: handlers/produtoAvulso.getProdutosAvulsos
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: produtos-avulsos
@@ -265,7 +268,7 @@ functions:
                   cors: true
     createProdutoAvulso:
         handler: handlers/produtoAvulso.createProdutoAvulso
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: produtos-avulsos
@@ -273,7 +276,7 @@ functions:
                   cors: true
     login:
         handler: handlers/auth.login
-        reservedConcurrency: 2
+
         events:
             - http:
                   path: auth
@@ -305,7 +308,6 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
-                      BillingMode: PROVISIONED
                       ProvisionedThroughput:
                           ReadCapacityUnits: 1
                           WriteCapacityUnits: 1
@@ -332,7 +334,6 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
-                      BillingMode: PROVISIONED
                       ProvisionedThroughput:
                           ReadCapacityUnits: 1
                           WriteCapacityUnits: 1
@@ -443,30 +444,11 @@ resources:
                             KeyType: HASH
                       Projection:
                           ProjectionType: ALL
-                      BillingMode: PROVISIONED
                       ProvisionedThroughput:
                           ReadCapacityUnits: 1
                           WriteCapacityUnits: 1
 
-        AgroMartTableScalingRead:
-            Type: AWS::ApplicationAutoScaling::ScalableTarget
-            Properties:
-                MaxCapacity: 2 #Define um limite máximo de 2 leituras simultâneas
-                MinCapacity: 1
-                ResourceId: table/*
-                RoleARN: arn:aws:iam::123456789012:role/DynamoDBAutoScalingRole
-                ScalableDimension: dynamodb:table:ReadCapacityUnits
-                ServiceNamespace: dynamodb
-
-        AgroMartTableScalingWrite:
-            Type: AWS::ApplicationAutoScaling::ScalableTarget
-            Properties:
-                MaxCapacity: 2 # 🔹 Define um limite máximo de 2 escritas simultâneas
-                MinCapacity: 1
-                ResourceId: table/*
-                RoleARN: arn:aws:iam::123456789012:role/DynamoDBAutoScalingRole
-                ScalableDimension: dynamodb:table:WriteCapacityUnits
-                ServiceNamespace: dynamodb
+${file(./autoscaling-resources.js)}:
 # BudgetAlarm:
 #     Type: AWS::Budgets::Budget
 #     Properties:

@@ -44,7 +44,6 @@ exports.createEndereco = async (event) => {
         };
 
         return retorno;
-
     } catch (error) {
         return {
             statusCode: 500,
@@ -118,11 +117,11 @@ exports.getEnderecoById = async (event) => {
 
 exports.updateEndereco = async (event) => {
     const endereco = JSON.parse(event.body);
-    const { enderecoId } = event.pathParameters;
+    const { id } = event.pathParameters;
 
     const params = {
         TableName: TABLE_NAME,
-        Key: { id: enderecoId },
+        Key: { id: id },
         UpdateExpression:
             "set cidade = :c, numero = :n, complemento = :co, cep = :ce, rua=:r, bairro = :b, userId = :u",
         ExpressionAttributeValues: {
@@ -138,11 +137,11 @@ exports.updateEndereco = async (event) => {
     };
     const result = await repo.updateEndereco(params, endereco);
 
-    return { 
-        statusCode: 200, 
+    return {
+        statusCode: 200,
         body: JSON.stringify({
             mensagem: "Endereço criado com sucesso!",
             data: await result.params?.Item,
-        }) 
-    }
+        }),
+    };
 };
