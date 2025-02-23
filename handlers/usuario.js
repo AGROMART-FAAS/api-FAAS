@@ -43,22 +43,24 @@ exports.createUsuario = async (event) => {
         created_at: timestamp,
     };
 
-    return repo
-        .createUsuario(usuario)
-        .then((data) => ({
+    try {
+        const result = await repo.createUsuario(usuario);
+        console.log("result criar usuario: " + JSON.stringify(result.Attributes))
+
+        return {
             statusCode: 200,
             body: JSON.stringify({
                 Mensagem: "Usuário criado com sucesso",
-                data: data,
+                user: {
+                    id: data.id,
+                    username: data.nome,
+                    email: data.email
+                }
             }),
-        }))
-        .catch((err) => ({
-            statusCode: 500,
-            body: JSON.stringify({
-                message: "Erro ao salvar",
-                error: err.message,
-            }),
-        }));
+        };
+    } catch (error) {
+        throw new Error(error.message);
+    }
 };
 
 // Função para excluir um usuário
@@ -94,17 +96,21 @@ exports.updateUsuario = async (event) => {
             TableName: TABLE_NAME,
             Key: { id: id },
             UpdateExpression:
-                "set nome = :nome, senha = :senha, email = :email",
+                "set nome = :nome, email = :email",
             ExpressionAttributeValues: {
-                ":nome": data.nome,
-                ":senha": data.senha,
+                ":nome": data.username,
                 ":email": data.email,
             },
             ReturnValues: "UPDATED_NEW",
         };
 
         const result = await repo.updateUsuario(params);
-        return result.Attributes;
+        console.log("result atualziar usuario: " + JSON.stringify(result.Attributes))
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify(result.Attributes),
+        };
     } catch (error) {
         throw new Error(error.message);
     }
