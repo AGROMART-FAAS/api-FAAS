@@ -67,8 +67,8 @@ exports.createAssinante = async (event, context) => {
         cestas_disponiveis: data.cestas_disponiveis || 0,
         pular_cesta: data.pular_cesta || false,
         usuario_id: data.usuario_id,
-        planos: JSON.stringify(data.planos),
-        lojas: JSON.stringify(data.lojas),
+        planos: data.planos,
+        lojas: data.lojas,
         created_at: timestamp,
     };
 
