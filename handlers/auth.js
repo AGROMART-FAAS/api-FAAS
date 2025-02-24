@@ -41,7 +41,8 @@ exports.login = async (event) => {
                 message: "Login realizado com sucesso.",
                 user: {
                     id: user.id,
-                    username: user.username,
+                    username: user.nome,
+                    email: user.email
                 },
             }),
         };
