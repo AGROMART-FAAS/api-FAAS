@@ -1,13 +1,19 @@
-# Define as variáveis que o cliente deve preencher
-$AWS_ACCESS_KEY_ID = "AKIA2S2Y36QFEEUPKO6F"
-$AWS_SECRET_ACCESS_KEY = "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"
-$AWS_REGION = "us-east-1"  
-$PROJECT_DIR = $PSScriptRoot # Caminho da aplicação Serverless
+# Caminho do arquivo .env (assume que está no mesmo diretório do script)
+$envFilePath = Join-Path $PSScriptRoot ".env"
 
-$URL_API_DICIONARIO = "https://aywcbxk6ql.execute-api.us-east-1.amazonaws.com/dev/"
-$NOME_CSA = "CSA SCRIPT"
-$NOME_RESPONSAVEL = "Murilo SCRIPT"
-$EMAIL_CSA = "EMAIL@email.com"
+# Verifica se o arquivo existe
+if (Test-Path $envFilePath) {
+    Get-Content $envFilePath | ForEach-Object {
+        if ($_ -match "^(.*?)=(.*)$") {
+            Set-Variable -Name $matches[1] -Value $matches[2]
+        }
+    }
+} else {
+    Write-Host "Arquivo .env não encontrado!"
+    exit
+}
+
+$PROJECT_DIR = $PSScriptRoot # Caminho da aplicação Serverless
 
 # Função para verificar se um comando existe
 function CommandExists {
@@ -64,7 +70,6 @@ $apiUrls = $deployOutput | Select-String -Pattern "(https://[a-zA-Z0-9.-]+\.amaz
 $baseApiUrl = $apiUrls | Select-String -Pattern "^https:\/\/[^\/]+\/dev" -AllMatches | Select-Object -First 1 | ForEach-Object { $_.Matches.Value } 
 
 # Requisicao POST para a api dicionario, salvando nela a URL da csa criada
-
 $headers = @{
     "Content-Type" = "application/json"
 }
